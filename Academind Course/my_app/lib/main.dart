@@ -36,8 +36,8 @@ class _MyAppState extends State<MyApp> {
         'answers': [
           {'text': 'Hyper Text Markup Language', 'score': 10},
           {'text': 'Hyper Type Markup language', 'score': 0},
-          {'text': 'Hyperlinks Text Markup Language', 'score': 20},
-          {'text': 'None of above', 'score': 30}
+          {'text': 'Hyperlinks Text Markup Language', 'score': 0},
+          {'text': 'None of above', 'score': 0}
         ]
       },
       {
@@ -60,26 +60,27 @@ class _MyAppState extends State<MyApp> {
       },
     ];
     return MaterialApp(
+        debugShowCheckedModeBanner: false,
         home: Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Center(
-          child: Text(
-            'Quiz',
-            style: (TextStyle(color: Colors.black)),
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            title: Center(
+              child: Text(
+                'Quiz',
+                style: (TextStyle(color: Colors.black)),
+              ),
+            ),
           ),
-        ),
-      ),
-      body: Padding(
-          padding: EdgeInsets.all(8.0),
-          child: questionIndex < questions.length
-              ? Quiz(
-                  questions: questions,
-                  answerQuestion: answerQuestion,
-                  questionIndex: questionIndex)
-              : Result(totalScore,resetQuiz)),
-    ));
+          body: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: questionIndex < questions.length
+                  ? Quiz(
+                      questions: questions,
+                      answerQuestion: answerQuestion,
+                      questionIndex: questionIndex)
+                  : Result(totalScore, resetQuiz)),
+        ));
   }
 }
