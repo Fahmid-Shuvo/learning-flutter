@@ -19,28 +19,43 @@ class _MyAppState extends State<MyApp> {
       questionIndex = questionIndex + 1;
       totalScore += score;
     });
-    print(totalScore);
+  }
+
+  void resetQuiz() {
+    setState(() {
+      questionIndex = 0;
+      totalScore = 0;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     var questions = [
       {
-        'questionText': 'What\'s your favorite color',
+        'questionText': 'HTML Stands For ?',
         'answers': [
-          {'text': 'Black', 'score': 0},
-          {'text': 'Blue', 'score': 10},
-          {'text': 'Green', 'score': 20},
-          {'text': 'White', 'score': 30}
+          {'text': 'Hyper Text Markup Language', 'score': 10},
+          {'text': 'Hyper Type Markup language', 'score': 0},
+          {'text': 'Hyperlinks Text Markup Language', 'score': 20},
+          {'text': 'None of above', 'score': 30}
         ]
       },
       {
-        'questionText': 'What\'s your favorite animal',
+        'questionText': 'ReactJS is developed by ?',
         'answers': [
-          {'text': 'Rabbit', 'score': 10},
-          {'text': 'Snake', 'score': 0},
-          {'text': 'Elephant', 'score': 30},
-          {'text': 'Lion', 'score': 5}
+          {'text': 'Google', 'score': 0},
+          {'text': 'Facebook', 'score': 10},
+          {'text': 'Amazon', 'score': 0},
+          {'text': 'Apple', 'score': 0}
+        ]
+      },
+      {
+        'questionText': 'Linux is created by ?',
+        'answers': [
+          {'text': 'Mark Zuckerberg', 'score': 0},
+          {'text': 'Bill Gates', 'score': 0},
+          {'text': 'Steve Jobs', 'score': 0},
+          {'text': 'Linux Trovalds', 'score': 10}
         ]
       },
     ];
@@ -64,7 +79,7 @@ class _MyAppState extends State<MyApp> {
                   questions: questions,
                   answerQuestion: answerQuestion,
                   questionIndex: questionIndex)
-              : Result()),
+              : Result(totalScore,resetQuiz)),
     ));
   }
 }
