@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import './widgets/user_transaction.dart';
+import './widgets/new_transaction.dart';
+import './models/transaction.dart';
+import './widgets/transaction_list.dart';
 
 void main() => runApp(MyApp());
 
@@ -8,10 +10,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Personal Expenses',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+          primarySwatch: Colors.purple,
+          accentColor: Colors.red,
+          fontFamily: 'Quicksand',
+          textTheme: ThemeData.light().textTheme.copyWith(
+              title: TextStyle(fontFamily: 'OpenSans', fontSize: 18, fontWeight: FontWeight.bold)),
+          appBarTheme: AppBarTheme(
+              textTheme: ThemeData.light().textTheme.copyWith(
+                  title: TextStyle(
+                      fontFamily: 'OpenSans', fontSize: 20, fontWeight: FontWeight.bold)))),
       home: MyHomePage(),
     );
   }
@@ -26,15 +35,49 @@ class MyApp extends StatelessWidget {
 //   _MyHomePageState createState() => _MyHomePageState();
 // }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   // String titleInput;
   // String amountInput;
 
   @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  final List<Transaction> _userTransaction = [];
+
+  void _addNewTransaction(String txTitle, int txAmount) {
+    final newTransaction = Transaction(
+        title: txTitle, amount: txAmount, date: DateTime.now(), id: DateTime.now().toString());
+
+    setState(() {
+      _userTransaction.add(newTransaction);
+    });
+  }
+
+  void showBottomModal(BuildContext ctx) {
+    showModalBottomSheet(
+        context: ctx,
+        builder: (_) {
+          return NewTransaction(_addNewTransaction);
+        });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () => showBottomModal(context),
+        ),
         appBar: AppBar(
-          title: Text('Personal Expense'),
+          title: Text('Personal Expenses'),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () => showBottomModal(context),
+            )
+          ],
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -49,7 +92,8 @@ class MyHomePage extends StatelessWidget {
                   elevation: 5,
                 ),
               ),
-              UserTransaction()
+              TransactionList(_userTransaction)
+              // UserTransaction(_userTransaction)
             ],
           ),
         ));
