@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+
 import '../screens/cateogry_meals_screen.dart';
 
 class CategoryItem extends StatelessWidget {
+  final String id;
   final String title;
   final Color color;
 
-  CategoryItem(this.title, this.color);
+  CategoryItem(this.title, this.color, this.id);
 
   void selectCategory(BuildContext context) {
-    Navigator.of(context).push(_createRoute());
+    Navigator.of(context).pushNamed(CategoryMealsScreen.routeName,
+        arguments: {'id': id, 'title': title});
   }
 
   @override
@@ -34,21 +37,23 @@ class CategoryItem extends StatelessWidget {
   }
 }
 
-Route _createRoute() {
-  return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) =>
-        CategoryMealsScreen(),
-    transitionsBuilder: (
-      BuildContext context,
-      Animation<double> animation,
-      Animation<double> secondaryAnimation,
-      Widget child,
-    ) =>
-        Align(
-      child: SizeTransition(
-        sizeFactor: animation,
-        child: child,
-      ),
-    ),
-  );
-}
+//ANimated Navigation
+
+// Route _createRoute() {
+//   return PageRouteBuilder(
+//     pageBuilder: (context, animation, secondaryAnimation) =>
+//         CategoryMealsScreen(),
+//     transitionsBuilder: (
+//       BuildContext context,
+//       Animation<double> animation,
+//       Animation<double> secondaryAnimation,
+//       Widget child,
+//     ) =>
+//         Align(
+//       child: SizeTransition(
+//         sizeFactor: animation,
+//         child: child,
+//       ),
+//     ),
+//   );
+// }
