@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './categories_screen.dart';
 import './favorites_screen.dart';
+import '../widgets/main_drawer.dart';
 
 class TabsScreen extends StatefulWidget {
   @override
@@ -13,10 +14,13 @@ class _TabsScreenState extends State<TabsScreen> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        drawer: MainDrawer(),
         appBar: AppBar(
           title: Text('MealsNow'),
           bottom: TabBar(
+            indicatorSize: TabBarIndicatorSize.label,
             indicatorColor: Colors.white,
+            unselectedLabelColor: Color(0xffcccccc),
             tabs: <Widget>[
               Tab(
                 icon: Icon(Icons.category),
