@@ -23,20 +23,37 @@ class CategoryMealsScreen extends StatelessWidget {
     }).toList();
 
     return Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text(categoryTitle),
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black,
+            ),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          elevation: 0,
+          centerTitle: true,
+          backgroundColor: Colors.white,
+          title: Text(
+            categoryTitle,
+            style: TextStyle(color: Colors.black),
+          ),
         ),
-        body: ListView.builder(
-            itemCount: categoryMeals.length,
-            itemBuilder: (ctx, index) {
-              return MealItem(
-                id: categoryMeals[index].id,
-                title: categoryMeals[index].title,
-                imageUrl: categoryMeals[index].imageUrl,
-                duration: categoryMeals[index].duration,
-                affordability: categoryMeals[index].affordability,
-                complexity: categoryMeals[index].complexity,
-              );
-            }));
+        body: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20.0),
+          child: ListView.builder(
+              itemCount: categoryMeals.length,
+              itemBuilder: (ctx, index) {
+                return MealItem(
+                  id: categoryMeals[index].id,
+                  title: categoryMeals[index].title,
+                  imageUrl: categoryMeals[index].imageUrl,
+                  duration: categoryMeals[index].duration,
+                  affordability: categoryMeals[index].affordability,
+                  complexity: categoryMeals[index].complexity,
+                );
+              }),
+        ));
   }
 }

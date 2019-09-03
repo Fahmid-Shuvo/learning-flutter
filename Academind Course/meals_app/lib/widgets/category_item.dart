@@ -19,19 +19,27 @@ class CategoryItem extends StatelessWidget {
     return InkWell(
       onTap: () => selectCategory(context),
       splashColor: Theme.of(context).primaryColor,
-      borderRadius: BorderRadius.circular(15),
+      borderRadius: BorderRadius.circular(10),
       child: Container(
+        alignment: Alignment.center,
         padding: const EdgeInsets.all(15),
         child: Text(
           title,
-          style: Theme.of(context).textTheme.title,
+          style: TextStyle(color: Colors.white, fontSize: 24),
         ),
         decoration: BoxDecoration(
+            boxShadow: [
+              new BoxShadow(
+                color: Color(0xffcccccc),
+                offset: new Offset(5.0, 5.0),
+                blurRadius: 5.0,
+              )
+            ],
             gradient: LinearGradient(
-                colors: [color.withOpacity(0.7), color],
+                colors: [color.withOpacity(0.8), color],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight),
-            borderRadius: BorderRadius.circular(15)),
+            borderRadius: BorderRadius.circular(10)),
       ),
     );
   }

@@ -3,6 +3,10 @@ import '../dummy-data.dart';
 
 class SingleMealDetail extends StatelessWidget {
   static const routeName = '/single-meal-detail';
+  final Function _toogleFavorite;
+  final Function _isFavorite;
+
+  SingleMealDetail(this._toogleFavorite, this._isFavorite);
 
   Widget _buildSectionTitle(BuildContext ctx, String text) {
     return Container(
@@ -32,57 +36,82 @@ class SingleMealDetail extends StatelessWidget {
     final mealId = ModalRoute.of(context).settings.arguments as String;
     final selectedMeal = DUMMY_MEALS.firstWhere((meal) => meal.id == mealId);
     return Scaffold(
-        appBar: AppBar(
-          title: Text('${selectedMeal.title}'),
+        backgroundColor: Colors.white,
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.red,
+          child: Icon(
+            _isFavorite(mealId) ? Icons.favorite : Icons.favorite_border,
+            color: Colors.white,
+          ),
+          onPressed: () => _toogleFavorite(mealId),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Container(
-                height: 300,
-                width: double.infinity,
-                child: Image.network(
-                  selectedMeal.imageUrl,
-                  fit: BoxFit.cover,
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black,
+            ),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          elevation: 0,
+          centerTitle: true,
+          backgroundColor: Colors.white,
+          title: Text(
+            '${selectedMeal.title}',
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10.0),
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Container(
+                  height: 300,
+                  width: double.infinity,
+                  child: Image.network(
+                    selectedMeal.imageUrl,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
-              _buildSectionTitle(context, 'Ingredients'),
-              _buildContainer(
-                child: ListView.builder(
-                  itemCount: selectedMeal.ingredients.length,
-                  itemBuilder: (ctx, index) {
-                    return Card(
-                      color: Theme.of(context).primaryColorDark,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 5, horizontal: 10),
-                        child: Text(
-                          selectedMeal.ingredients[index],
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              _buildSectionTitle(context, 'Steps'),
-              _buildContainer(
+                _buildSectionTitle(context, 'Ingredients'),
+                _buildContainer(
                   child: ListView.builder(
-                      itemCount: selectedMeal.steps.length,
-                      itemBuilder: (ctx, index) => Column(
-                            children: <Widget>[
-                              ListTile(
-                                leading: CircleAvatar(
-                                  child: Text('# ${index + 1}'),
+                    itemCount: selectedMeal.ingredients.length,
+                    itemBuilder: (ctx, index) {
+                      return Card(
+                        color: Theme.of(context).primaryColorDark,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 5, horizontal: 10),
+                          child: Text(
+                            selectedMeal.ingredients[index],
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                _buildSectionTitle(context, 'Steps'),
+                _buildContainer(
+                    child: ListView.builder(
+                        itemCount: selectedMeal.steps.length,
+                        itemBuilder: (ctx, index) => Column(
+                              children: <Widget>[
+                                ListTile(
+                                  leading: CircleAvatar(
+                                    child: Text('# ${index + 1}'),
+                                  ),
+                                  title: Text(selectedMeal.steps[index]),
                                 ),
-                                title: Text(selectedMeal.steps[index]),
-                              ),
-                              Divider(
-                                color: Colors.black,
-                              )
-                            ],
-                          )))
-            ],
+                                Divider(
+                                  color: Colors.black,
+                                )
+                              ],
+                            )))
+              ],
+            ),
           ),
         ));
   }

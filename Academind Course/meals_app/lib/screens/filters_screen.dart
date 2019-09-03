@@ -41,10 +41,23 @@ class _FilterScreenState extends State<FilterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black,
+            ),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          elevation: 0,
+          backgroundColor: Colors.white,
           actions: <Widget>[
             IconButton(
-                icon: Icon(Icons.save),
+                icon: Icon(
+                  Icons.save,
+                  color: Colors.black,
+                ),
                 onPressed: () {
                   final selectedFilters = {
                     'gluten': _glutenFree,
