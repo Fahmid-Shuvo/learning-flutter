@@ -76,7 +76,7 @@ class MealItem extends StatelessWidget {
                         topLeft: Radius.circular(15),
                         topRight: Radius.circular(15)),
                     child: Hero(
-                      tag: 'meal',
+                      tag: imageUrl,
                       child: Image.network(
                         imageUrl,
                         height: 250,

@@ -70,7 +70,7 @@ class SingleMealDetail extends StatelessWidget {
                   height: 300,
                   width: double.infinity,
                   child: Hero(
-                    tag: 'meal',
+                    tag: selectedMeal.imageUrl,
                     child: Image.network(
                       selectedMeal.imageUrl,
                       fit: BoxFit.cover,
