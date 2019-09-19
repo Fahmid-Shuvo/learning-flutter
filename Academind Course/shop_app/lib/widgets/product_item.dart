@@ -10,6 +10,13 @@ class ProductItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final product = Provider.of<Product>(context, listen: false);
     final cart = Provider.of<Cart>(context, listen: false);
+    final snackBar = SnackBar(
+      content: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: Text('Added to Cart!'),
+      ),
+      duration: Duration(seconds: 2),
+    );
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
@@ -41,6 +48,7 @@ class ProductItem extends StatelessWidget {
             color: Theme.of(context).accentColor,
             onPressed: () {
               cart.addItem(product.id, product.price, product.title);
+              Scaffold.of(context).showSnackBar(snackBar);
             },
           ),
           backgroundColor: Colors.black87,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/products_provider.dart';
+import '../widgets/main_drawer.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   static const routeName = '/product-detail';
@@ -12,20 +13,45 @@ class ProductDetailScreen extends StatelessWidget {
         Provider.of<ProductsProvider>(context).findById(productId);
 
     return Scaffold(
+      drawer: MainDrawer(),
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          title: Text(loadedProduct.title),
-          elevation: 0,
-          centerTitle: true),
-      body: ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: Hero(
-            tag: loadedProduct.imageUrl,
-            child: Image.network(loadedProduct.imageUrl)),
+          title: Text(loadedProduct.title), elevation: 0, centerTitle: true),
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Container(
+              height: 300,
+              width: double.infinity,
+              child: Hero(
+                  tag: loadedProduct.imageUrl,
+                  child: Image.network(
+                    loadedProduct.imageUrl,
+                    fit: BoxFit.cover,
+                  )),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              'Rs. ${loadedProduct.price}',
+              style: TextStyle(color: Colors.grey, fontSize: 20),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              width: double.infinity,
+              child: Text(
+                '${loadedProduct.description}',
+                textAlign: TextAlign.center,
+                softWrap: true,
+                style: TextStyle(fontSize: 20),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
