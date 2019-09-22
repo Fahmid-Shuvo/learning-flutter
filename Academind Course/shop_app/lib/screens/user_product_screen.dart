@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../provider/products_provider.dart';
 import '../widgets/main_drawer.dart';
-import '../screens/edit_product_screen.dart';
+import '../screens/add_and_edit_product_screen.dart';
 
 class UserProductsScreen extends StatelessWidget {
   static const routeName = '/user-product-screen';
@@ -16,9 +16,9 @@ class UserProductsScreen extends StatelessWidget {
         heroTag: 'hero-fab',
         backgroundColor: Colors.purple,
         icon: Icon(Icons.add),
-        label: Text('Edit Product'),
+        label: Text('Add Product'),
         onPressed: () =>
-            Navigator.of(context).pushNamed(EditProductScreen.routeName),
+            Navigator.of(context).pushNamed(AddAndEditProductScreen.routeName),
       ),
       backgroundColor: Theme.of(context).primaryColor,
       drawer: MainDrawer(),
@@ -44,7 +44,9 @@ class UserProductsScreen extends StatelessWidget {
                           Icons.edit,
                           color: Colors.purple,
                         ),
-                        onPressed: () {},
+                        onPressed: () => Navigator.of(context).pushNamed(
+                            AddAndEditProductScreen.routeName,
+                            arguments: products.items[i].id),
                       ),
                       IconButton(
                         icon: Icon(
