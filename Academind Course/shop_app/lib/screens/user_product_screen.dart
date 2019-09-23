@@ -8,6 +8,10 @@ import '../screens/add_and_edit_product_screen.dart';
 class UserProductsScreen extends StatelessWidget {
   static const routeName = '/user-product-screen';
 
+  Future<void> _refreshProducts(BuildContext context) async {
+    await Provider.of<ProductsProvider>(context).getAndSetProducts();
+  }
+
   @override
   Widget build(BuildContext context) {
     final products = Provider.of<ProductsProvider>(context);
@@ -24,43 +28,47 @@ class UserProductsScreen extends StatelessWidget {
       drawer: MainDrawer(),
       appBar:
           AppBar(title: Text('Your Products'), elevation: 0, centerTitle: true),
-      body: Padding(
-        padding: const EdgeInsets.all(8),
-        child: ListView.builder(
-          itemCount: products.items.length,
-          itemBuilder: (ctx, i) => Column(
-            children: <Widget>[
-              ListTile(
-                leading: CircleAvatar(
-                  backgroundImage: NetworkImage(products.items[i].imageUrl),
-                ),
-                title: Text(products.items[i].title),
-                trailing: Container(
-                  width: 100,
-                  child: Row(
-                    children: <Widget>[
-                      IconButton(
-                        icon: Icon(
-                          Icons.edit,
-                          color: Colors.purple,
+      body: RefreshIndicator(
+        onRefresh: () => _refreshProducts(context),
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: ListView.builder(
+            itemCount: products.items.length,
+            itemBuilder: (ctx, i) => Column(
+              children: <Widget>[
+                ListTile(
+                  leading: CircleAvatar(
+                    backgroundImage: NetworkImage(products.items[i].imageUrl),
+                  ),
+                  title: Text(products.items[i].title),
+                  trailing: Container(
+                    width: 100,
+                    child: Row(
+                      children: <Widget>[
+                        IconButton(
+                          icon: Icon(
+                            Icons.edit,
+                            color: Colors.purple,
+                          ),
+                          onPressed: () => Navigator.of(context).pushNamed(
+                              AddAndEditProductScreen.routeName,
+                              arguments: products.items[i].id),
                         ),
-                        onPressed: () => Navigator.of(context).pushNamed(
-                            AddAndEditProductScreen.routeName,
-                            arguments: products.items[i].id),
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.delete,
-                          color: Colors.red,
+                        IconButton(
+                          icon: Icon(
+                            Icons.delete,
+                            color: Colors.red,
+                          ),
+                          onPressed: () =>
+                              products.deleteProduct(products.items[i].id),
                         ),
-                        onPressed: () {},
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Divider()
-            ],
+                Divider()
+              ],
+            ),
           ),
         ),
       ),

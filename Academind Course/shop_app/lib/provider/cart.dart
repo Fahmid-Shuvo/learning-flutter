@@ -74,7 +74,7 @@ class Cart extends ChangeNotifier {
                 quantity: existingProduct.quantity - 1,
               ));
     } else {
-      items.remove(productId);
+      _items.remove(productId);
     }
     notifyListeners();
   }
