@@ -13,17 +13,15 @@ void addMovie(BuildContext ctx, String movieName) {
   });
 }
 
-Future<void> showBottomSheetModal(ctx, movieNameController) =>
+Future<void> showBottomSheetModal(ctx, movieNameController, isDark) =>
     showModalBottomSheet(
+        backgroundColor: isDark ? Colors.black : Colors.white,
         context: ctx,
         builder: (_) {
           return SingleChildScrollView(
             child: Container(
-              padding: EdgeInsets.only(
-                  top: 20,
-                  left: 20,
-                  right: 20,
-                  bottom: MediaQuery.of(ctx).viewInsets.bottom + 10),
+              padding:
+                  EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 30),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
@@ -31,7 +29,8 @@ Future<void> showBottomSheetModal(ctx, movieNameController) =>
                     controller: movieNameController,
                     decoration: InputDecoration(
                       labelText: 'Movie Name',
-                      labelStyle: TextStyle(color: Colors.black),
+                      labelStyle: TextStyle(
+                          color: isDark ? Colors.white : Colors.black),
                       border: OutlineInputBorder(),
                       focusedBorder: OutlineInputBorder(),
                     ),
@@ -40,7 +39,11 @@ Future<void> showBottomSheetModal(ctx, movieNameController) =>
                     height: 50,
                   ),
                   OutlineButton(
-                    child: Text('Add'),
+                    child: Text(
+                      'Add',
+                      style: TextStyle(
+                          color: isDark ? Colors.white : Colors.black),
+                    ),
                     onPressed: () => addMovie(ctx, movieNameController.text),
                     borderSide: BorderSide(color: Colors.purple, width: 2),
                   )

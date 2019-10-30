@@ -4,7 +4,19 @@ import 'package:day_night_switch/day_night_switch.dart';
 import './stream/index.dart';
 import './builderMethods/BottomModalSheet.dart';
 
-void main() => runApp(MyHomePage());
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      theme: ThemeData(primarySwatch: Colors.red, brightness: Brightness.light),
+      home: MyHomePage(),
+    );
+  }
+}
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -16,45 +28,37 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-          primarySwatch: Colors.red,
-          brightness:
-              switchThemeValue == false ? Brightness.light : Brightness.dark),
-      home: Scaffold(
-          floatingActionButton: FloatingActionButton.extended(
-            icon: Icon(Icons.movie),
-            label: Text("Add Movies"),
-            onPressed: () => showBottomModal(context),
-          ),
-          appBar: AppBar(
-            actions: <Widget>[
-              Container(
-                child: Transform.scale(
-                  scale: 0.5,
-                  child: DayNightSwitch(
-                    value: switchThemeValue,
-                    onChanged: (value) {
-                      setState(() {
-                        switchThemeValue = value;
-                      });
-                    },
-                  ),
+    return Scaffold(
+        floatingActionButton: FloatingActionButton.extended(
+          icon: Icon(Icons.movie),
+          label: Text("Add Movies"),
+          onPressed: () => showBottomModal(context, switchThemeValue),
+        ),
+        appBar: AppBar(
+          actions: <Widget>[
+            Container(
+              child: Transform.scale(
+                scale: 0.5,
+                child: DayNightSwitch(
+                  value: switchThemeValue,
+                  onChanged: (value) {
+                    setState(() {
+                      switchThemeValue = value;
+                    });
+                  },
                 ),
-              )
-            ],
-            centerTitle: true,
-            title: Text('Tap to Vote for Movie'),
-          ),
-          body: CustomStreamBuider()),
-    );
+              ),
+            )
+          ],
+          centerTitle: true,
+          title: Text('Tap to Vote for Movie'),
+        ),
+        body: CustomStreamBuider());
   }
 }
 
-void showBottomModal(BuildContext ctx) {
+void showBottomModal(BuildContext ctx, bool switchThemeValue) {
   final movieNameController = TextEditingController();
 
-  showBottomSheetModal(ctx, movieNameController);
+  showBottomSheetModal(ctx, movieNameController, switchThemeValue);
 }
