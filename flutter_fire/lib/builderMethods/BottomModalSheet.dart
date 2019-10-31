@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-void addMovie(BuildContext ctx, String movieName) {
+void addMovie(BuildContext ctx, String movieName) async {
   if (movieName.isEmpty) {
     return;
   }
   final dbRef = Firestore.instance.collection('movies').document();
   Firestore.instance.runTransaction((transaction) async {
     DocumentSnapshot freshSnap = await transaction.get(dbRef);
-    await transaction.set(freshSnap.reference, {'name': movieName, 'votes': 0});
+    await transaction.set(
+        freshSnap.reference, {'name': movieName, 'votes': 0, 'votes_from': []});
     Navigator.of(ctx).pop();
   });
 }
