@@ -1,21 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:day_night_switch/day_night_switch.dart';
 
-import './stream/index.dart';
 import './builderMethods/BottomModalSheet.dart';
+import './stream/index.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(MyHomePage());
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(primarySwatch: Colors.red, brightness: Brightness.light),
-      home: MyHomePage(),
-    );
-  }
+void showBottomModal(BuildContext ctx, bool isDark) {
+  final movieNameController = TextEditingController();
+  showBottomSheetModal(ctx, movieNameController, isDark);
 }
 
 class MyHomePage extends StatefulWidget {
@@ -28,37 +21,40 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        floatingActionButton: FloatingActionButton.extended(
-          icon: Icon(Icons.movie),
-          label: Text("Add Movies"),
-          onPressed: () => showBottomModal(context, switchThemeValue),
-        ),
-        appBar: AppBar(
-          actions: <Widget>[
-            Container(
-              child: Transform.scale(
-                scale: 0.5,
-                child: DayNightSwitch(
-                  value: switchThemeValue,
-                  onChanged: (value) {
-                    setState(() {
-                      switchThemeValue = value;
-                    });
-                  },
-                ),
-              ),
-            )
-          ],
-          centerTitle: true,
-          title: Text('Tap to Vote for Movie'),
-        ),
-        body: CustomStreamBuider());
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      theme: ThemeData(
+          primarySwatch: Colors.red,
+          brightness: !switchThemeValue ? Brightness.light : Brightness.dark),
+      home: Builder(
+        builder: (ctx) => Scaffold(
+            floatingActionButton: FloatingActionButton.extended(
+              icon: Icon(Icons.movie),
+              label: Text("Add Movies"),
+              onPressed: () => showBottomModal(ctx, switchThemeValue),
+            ),
+            appBar: AppBar(
+              actions: <Widget>[
+                Container(
+                  child: Transform.scale(
+                    scale: 0.3,
+                    child: DayNightSwitch(
+                      value: switchThemeValue,
+                      onChanged: (value) {
+                        setState(() {
+                          switchThemeValue = value;
+                        });
+                      },
+                    ),
+                  ),
+                )
+              ],
+              centerTitle: true,
+              title: Text('Tap to Vote for Movie'),
+            ),
+            body: CustomStreamBuider()),
+      ),
+    );
   }
-}
-
-void showBottomModal(BuildContext ctx, bool switchThemeValue) {
-  final movieNameController = TextEditingController();
-
-  showBottomSheetModal(ctx, movieNameController, switchThemeValue);
 }

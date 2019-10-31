@@ -13,15 +13,19 @@ void addMovie(BuildContext ctx, String movieName) {
   });
 }
 
-Future<void> showBottomSheetModal(ctx, movieNameController, isDark) =>
+Future<void> showBottomSheetModal(
+        BuildContext ctx, movieNameController, isDark) =>
     showModalBottomSheet(
         backgroundColor: isDark ? Colors.black : Colors.white,
         context: ctx,
         builder: (_) {
           return SingleChildScrollView(
             child: Container(
-              padding:
-                  EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 30),
+              padding: EdgeInsets.only(
+                  top: 20,
+                  left: 20,
+                  right: 20,
+                  bottom: MediaQuery.of(ctx).viewInsets.bottom + 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
