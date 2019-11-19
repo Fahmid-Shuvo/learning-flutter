@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:day_night_switch/day_night_switch.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 import './builderMethods/BottomModalSheet.dart';
 import './stream/index.dart';
+import './models/MovieModel.dart';
 
 void main() => runApp(MyHomePage());
 
@@ -53,7 +55,8 @@ class _MyHomePageState extends State<MyHomePage> {
               centerTitle: true,
               title: Text('Tap to Vote for Movie'),
             ),
-            body: CustomStreamBuider()),
+            body: ScopedModel<MovieModel>(
+                model: MovieModel(), child: CustomStreamBuider())),
       ),
     );
   }
