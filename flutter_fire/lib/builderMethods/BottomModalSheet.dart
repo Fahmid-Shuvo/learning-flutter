@@ -4,12 +4,13 @@ import '../models/MovieModel.dart';
 
 Future<void> showBottomSheetModal(
   BuildContext ctx,
+  bool isDarkMode
 ) {
   final movieRef = ScopedModel.of<MovieModel>(ctx);
   final movieNameController = TextEditingController();
 
   return showModalBottomSheet(
-      backgroundColor: Colors.white,
+      backgroundColor: isDarkMode ? Colors.black : Colors.white,
       context: ctx,
       builder: (_) {
         return SingleChildScrollView(
