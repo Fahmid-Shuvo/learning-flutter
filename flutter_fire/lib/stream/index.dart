@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:scoped_model/scoped_model.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 import '../builderMethods/ListItem.dart';
-// import '../models//MovieModel.dart';
+import '../models/MovieModel.dart';
 
 class CustomStreamBuider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // final moviesRef = ScopedModel.of<MovieModel>(context);
+    final moviesRef = ScopedModel.of<MovieModel>(context).getMovies;
+
     return Padding(
       padding: const EdgeInsets.all(10),
       child: StreamBuilder<QuerySnapshot>(
-          stream: Firestore.instance
-              .collection('movies')
-              .orderBy('name')
-              .snapshots(),
+          stream: moviesRef,
           builder: (context, snapshot) {
             if (!snapshot.hasData)
               return Center(child: CircularProgressIndicator());
@@ -27,7 +25,7 @@ class CustomStreamBuider extends StatelessWidget {
               separatorBuilder: (_, index) => Divider(),
               itemCount: snapshot.data.documents.length,
               itemBuilder: (ctx, index) =>
-                  buildListTile(context, snapshot.data.documents[index]),
+                  buildListTile(ctx, snapshot.data.documents[index]),
             );
           }),
     );

@@ -8,27 +8,26 @@ import 'package:device_info/device_info.dart';
 class MovieModel extends Model {
   static MovieModel of(BuildContext context) =>
       ScopedModel.of<MovieModel>(context);
-  static final db = Firestore.instance;
 
-  Stream<QuerySnapshot> _movies =
-      db.collection('movies').orderBy('name').snapshots();
-
-  Stream<QuerySnapshot> get getMovies => _movies;
+  Stream<QuerySnapshot> get getMovies =>
+      Firestore.instance.collection('movies').orderBy('name').snapshots();
 
   void deleteMovie(id) {
-    db.collection('movies').document(id).delete();
+    Firestore.instance.collection('movies').document(id).delete();
+    notifyListeners();
   }
 
   void addMovie(String movieName) {
     if (movieName.isEmpty) {
       return;
     }
-    final documentRef = db.collection('movies').document();
-    db.runTransaction((transaction) async {
+    final documentRef = Firestore.instance.collection('movies').document();
+    Firestore.instance.runTransaction((transaction) async {
       DocumentSnapshot freshSnap = await transaction.get(documentRef);
       await transaction.set(freshSnap.reference,
           {'name': movieName, 'votes': 0, 'votes_from': []});
     });
+    notifyListeners();
   }
 
   Future<dynamic> getDeviceId() async {
@@ -45,7 +44,7 @@ class MovieModel extends Model {
   void updateCollection(document) async {
     var deviceId = await getDeviceId();
 
-    db.runTransaction((transaction) async {
+    Firestore.instance.runTransaction((transaction) async {
       DocumentSnapshot freshSnap = await transaction.get(document.reference);
       List<dynamic> votes = freshSnap['votes_from'];
       final alreadyVoted = votes.where((item) {
@@ -76,5 +75,6 @@ class MovieModel extends Model {
         // ]
       });
     });
+    notifyListeners();
   }
 }

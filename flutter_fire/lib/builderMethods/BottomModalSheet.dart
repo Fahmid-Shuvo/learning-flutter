@@ -3,11 +3,13 @@ import 'package:scoped_model/scoped_model.dart';
 import '../models/MovieModel.dart';
 
 Future<void> showBottomSheetModal(
-    BuildContext ctx, movieNameController, isDark) {
+  BuildContext ctx,
+) {
   final movieRef = ScopedModel.of<MovieModel>(ctx);
+  final movieNameController = TextEditingController();
 
   return showModalBottomSheet(
-      backgroundColor: isDark ? Colors.black : Colors.white,
+      backgroundColor: Colors.white,
       context: ctx,
       builder: (_) {
         return SingleChildScrollView(
@@ -24,8 +26,6 @@ Future<void> showBottomSheetModal(
                   controller: movieNameController,
                   decoration: InputDecoration(
                     labelText: 'Movie Name',
-                    labelStyle:
-                        TextStyle(color: isDark ? Colors.white : Colors.black),
                     border: OutlineInputBorder(),
                     focusedBorder: OutlineInputBorder(),
                   ),
@@ -36,8 +36,6 @@ Future<void> showBottomSheetModal(
                 OutlineButton(
                   child: Text(
                     'Add',
-                    style:
-                        TextStyle(color: isDark ? Colors.white : Colors.black),
                   ),
                   onPressed: () {
                     movieRef.addMovie(movieNameController.text);
