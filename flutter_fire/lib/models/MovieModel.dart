@@ -9,11 +9,13 @@ class MovieModel extends Model {
   static MovieModel of(BuildContext context) =>
       ScopedModel.of<MovieModel>(context);
 
+  static final db = Firestore.instance;
+
   Stream<QuerySnapshot> get getMovies =>
-      Firestore.instance.collection('movies').orderBy('name').snapshots();
+      db.collection('movies').orderBy('name').snapshots();
 
   void deleteMovie(id) {
-    Firestore.instance.collection('movies').document(id).delete();
+    db.collection('movies').document(id).delete();
     notifyListeners();
   }
 
@@ -21,8 +23,8 @@ class MovieModel extends Model {
     if (movieName.isEmpty) {
       return;
     }
-    final documentRef = Firestore.instance.collection('movies').document();
-    Firestore.instance.runTransaction((transaction) async {
+    final documentRef = db.collection('movies').document();
+    db.runTransaction((transaction) async {
       DocumentSnapshot freshSnap = await transaction.get(documentRef);
       await transaction.set(freshSnap.reference,
           {'name': movieName, 'votes': 0, 'votes_from': []});
@@ -44,7 +46,7 @@ class MovieModel extends Model {
   void updateCollection(document) async {
     var deviceId = await getDeviceId();
 
-    Firestore.instance.runTransaction((transaction) async {
+    db.runTransaction((transaction) async {
       DocumentSnapshot freshSnap = await transaction.get(document.reference);
       List<dynamic> votes = freshSnap['votes_from'];
       final alreadyVoted = votes.where((item) {

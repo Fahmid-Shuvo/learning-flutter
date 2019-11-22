@@ -20,6 +20,7 @@ dependencies:
   device_info:
   day_night_switch:
   cloud_firestore:
+  firebase_auth:
   flutter:
     sdk: flutter
 
@@ -29,6 +30,7 @@ dependencies:
 
 dev_dependencies:
   scoped_model: ^1.0.1
+  font_awesome_flutter: ^8.5.0
   flutter_test:
     sdk: flutter
 
@@ -54,17 +56,9 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
+  fonts:
+    - family: CabinRegular
+      fonts:
+        - asset: assets/Cabin/Cabin-Regular.ttf
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

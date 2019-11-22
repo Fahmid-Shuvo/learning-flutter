@@ -8,12 +8,12 @@ import '../models/MovieModel.dart';
 class CustomStreamBuider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final moviesRef = ScopedModel.of<MovieModel>(context).getMovies;
+    final movies = ScopedModel.of<MovieModel>(context).getMovies;
 
     return Padding(
       padding: const EdgeInsets.all(10),
       child: StreamBuilder<QuerySnapshot>(
-          stream: moviesRef,
+          stream: movies,
           builder: (context, snapshot) {
             if (!snapshot.hasData)
               return Center(child: CircularProgressIndicator());
