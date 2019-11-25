@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../builderMethods/BuildAppBar.dart';
 import '../models/ThemeModel.dart';
 import './Home.dart';
+import './SignUp.dart';
 
 class LoginScreen extends StatelessWidget {
   static final routeName = '/';
@@ -16,8 +18,8 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       appBar: appBarWithThemeChanger(theme, 'Login'),
       body: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
+          // crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(top: 40, left: 25),
@@ -30,13 +32,13 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(15),
               child: TextField(
                 decoration: InputDecoration(labelText: 'Email'),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(15),
               child: TextField(
                 decoration: InputDecoration(labelText: 'Password'),
               ),
@@ -120,6 +122,9 @@ class LoginScreen extends StatelessWidget {
                   text: 'Dont have an account? ',
                   children: <TextSpan>[
                     TextSpan(
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () => Navigator.of(context)
+                              .pushNamed(SignUpScreen.routeName),
                         text: 'Sign Up',
                         style: TextStyle(
                             fontWeight: FontWeight.bold, color: Colors.purple)),

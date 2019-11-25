@@ -3,6 +3,8 @@ import 'package:scoped_model/scoped_model.dart';
 
 import './models/MovieModel.dart';
 import './models/ThemeModel.dart';
+import './models/UserModel.dart';
+
 import './screens/Login.dart';
 import './screens/SignUp.dart';
 import './screens/Home.dart';
@@ -37,7 +39,10 @@ class MaterialAppWithTheme extends StatelessWidget {
       routes: {
         Home.routeName: (context) =>
             ScopedModel<MovieModel>(model: MovieModel(), child: Home()),
-        SignUpScreen.routeName: (context) => SignUpScreen(),
+        SignUpScreen.routeName: (context) => ScopedModel<UserModel>(
+              model: UserModel(),
+              child: SignUpScreen(),
+            )
       },
     );
   }

@@ -4,122 +4,182 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../builderMethods/BuildAppBar.dart';
 import '../models/ThemeModel.dart';
+import '../models/UserModel.dart';
 import './Home.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
   static final routeName = '/sign-up';
 
   @override
+  _SignUpScreenState createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
+  @override
   Widget build(BuildContext context) {
+    final _form = GlobalKey<FormState>();
+    final _emailController = TextEditingController();
+    final _nameController = TextEditingController();
+    final _passwordController = TextEditingController();
     final theme = ScopedModel.of<ThemeChanger>(context);
+    final user = ScopedModel.of<UserModel>(context);
+
+    void _handleSignUp() async {
+      final isValid = _form.currentState.validate();
+      if (!isValid) {
+        return;
+      }
+      try {
+        await user.handleSignUp(_nameController.text, _emailController.text,
+            _passwordController.text);
+        Navigator.pushNamed(context, Home.routeName);
+      } catch (error) {
+        showDialog(
+            context: context,
+            builder: (ctx) => AlertDialog(
+                  title: Text('Invalid'),
+                  content: Text("${error.message}"),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text('Ok'),
+                      onPressed: () => Navigator.of(ctx).pop(),
+                    )
+                  ],
+                ));
+        return;
+      }
+    }
+
     return Scaffold(
-      appBar: appBarWithThemeChanger(theme, 'Login'),
+      appBar: appBarWithThemeChanger(theme, 'Sign Up'),
       body: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 40, left: 25),
-              child: Text(
-                'Come back',
-                style: TextStyle(
-                    fontSize: 35,
-                    color: Colors.green,
-                    fontWeight: FontWeight.bold),
+        child: Form(
+          key: _form,
+          child: ListView(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(top: 40, left: 25),
+                child: Text(
+                  'Register In',
+                  style: TextStyle(
+                      fontSize: 35,
+                      color: Colors.green,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: TextField(
-                decoration: InputDecoration(labelText: 'Name'),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: TextField(
-                decoration: InputDecoration(labelText: 'Email'),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: TextField(
-                decoration: InputDecoration(labelText: 'Password'),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: Align(
-                alignment: Alignment.center,
-                child: FlatButton(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 120, vertical: 20),
-                  child: Text(
-                    'Let me in',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, Home.routeName);
+              Padding(
+                padding: const EdgeInsets.all(15),
+                child: TextFormField(
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Name cannot be empty';
+                    }
+                    return null;
                   },
-                  color: Colors.green,
-                  textColor: Colors.white,
+                  controller: _nameController,
+                  decoration: InputDecoration(labelText: 'Name'),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: Align(
+              Padding(
+                padding: const EdgeInsets.all(15),
+                child: TextFormField(
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Email cannot be empty';
+                    }
+
+                    return null;
+                  },
+                  controller: _emailController,
+                  decoration: InputDecoration(labelText: 'Email'),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(15),
+                child: TextFormField(
+                  controller: _passwordController,
+                  decoration: InputDecoration(labelText: 'Password'),
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Password cannot be empty';
+                    }
+
+                    return null;
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Align(
                   alignment: Alignment.center,
-                  child: Text(
-                    'Or log in via',
-                  )),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                FlatButton.icon(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                  icon: Icon(
-                    FontAwesomeIcons.facebookF,
-                    size: 20,
-                  ),
-                  color: Color(0xFF3b5998),
-                  textColor: Colors.white,
-                  label: Text(
-                    'Facebook',
-                    style: TextStyle(fontSize: 15),
-                  ),
-                  onPressed: () {},
-                ),
-                SizedBox(
-                  width: 20,
-                ),
-                FlatButton.icon(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                  icon: Icon(
-                    FontAwesomeIcons.google,
-                    size: 20,
-                  ),
-                  color: Colors.red,
-                  textColor: Colors.white,
-                  label: Text(
-                    'Google',
-                    style: TextStyle(
-                      fontSize: 15,
+                  child: FlatButton(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 120, vertical: 20),
+                    child: Text(
+                      'Register In',
+                      style: TextStyle(fontSize: 20),
                     ),
+                    onPressed: _handleSignUp,
+                    color: Colors.green,
+                    textColor: Colors.white,
                   ),
-                  onPressed: () {},
                 ),
-              ],
-            )
-          ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Or log in via',
+                    )),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  FlatButton.icon(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 40, vertical: 15),
+                    icon: Icon(
+                      FontAwesomeIcons.facebookF,
+                      size: 20,
+                    ),
+                    color: Color(0xFF3b5998),
+                    textColor: Colors.white,
+                    label: Text(
+                      'Facebook',
+                      style: TextStyle(fontSize: 15),
+                    ),
+                    onPressed: () {},
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  FlatButton.icon(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 40, vertical: 15),
+                    icon: Icon(
+                      FontAwesomeIcons.google,
+                      size: 20,
+                    ),
+                    color: Colors.red,
+                    textColor: Colors.white,
+                    label: Text(
+                      'Google',
+                      style: TextStyle(
+                        fontSize: 15,
+                      ),
+                    ),
+                    onPressed: () => user.handleGoogleSignUp(),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
-    ;
   }
 }

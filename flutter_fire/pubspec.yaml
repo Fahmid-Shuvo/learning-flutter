@@ -21,6 +21,7 @@ dependencies:
   day_night_switch:
   cloud_firestore:
   firebase_auth:
+  google_sign_in:
   flutter:
     sdk: flutter
 
