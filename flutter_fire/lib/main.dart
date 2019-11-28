@@ -35,10 +35,15 @@ class MaterialAppWithTheme extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Firebase',
       theme: theme.getTheme(),
-      home: LoginScreen(),
+      home: ScopedModel<AuthModel>(
+          model: AuthModel(),
+          child: ScopedModel<MovieModel>(
+            model: MovieModel(),
+            child: HomeScreen(),
+          )),
       routes: {
-        Home.routeName: (context) =>
-            ScopedModel<MovieModel>(model: MovieModel(), child: Home()),
+        LoginScreen.routeName: (context) =>
+            ScopedModel<AuthModel>(model: AuthModel(), child: LoginScreen()),
         SignUpScreen.routeName: (context) => ScopedModel<AuthModel>(
               model: AuthModel(),
               child: SignUpScreen(),

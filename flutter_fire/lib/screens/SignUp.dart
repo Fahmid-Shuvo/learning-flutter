@@ -8,7 +8,7 @@ import '../models/AuthModel.dart';
 import './Home.dart';
 
 class SignUpScreen extends StatefulWidget {
-  static final routeName = '/sign-up';
+  static final routeName = '/signup';
 
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
@@ -36,7 +36,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         await user.handleSignUp(_nameController.text, _emailController.text,
             _passwordController.text);
         user.stopLoader();
-        Navigator.pushNamed(context, Home.routeName);
+        Navigator.pushNamed(context, HomeScreen.routeName);
       } catch (error) {
         user.stopLoader();
         showDialog(

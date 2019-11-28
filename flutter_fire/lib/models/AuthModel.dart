@@ -15,6 +15,10 @@ class AuthModel extends Model {
   //   ],
   // );
 
+  Future<FirebaseUser> getUser() async {
+    return await _auth.currentUser();
+  }
+
   void startLoader() {
     loading = true;
     notifyListeners();

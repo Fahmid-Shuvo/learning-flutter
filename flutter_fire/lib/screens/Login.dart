@@ -9,7 +9,7 @@ import './Home.dart';
 import './SignUp.dart';
 
 class LoginScreen extends StatelessWidget {
-  static final routeName = '/';
+  static final routeName = '/login';
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +55,7 @@ class LoginScreen extends StatelessWidget {
                     style: TextStyle(fontSize: 20),
                   ),
                   onPressed: () {
-                    Navigator.pushNamed(context, Home.routeName);
+                    Navigator.pushNamed(context, HomeScreen.routeName);
                   },
                   color: Colors.green,
                   textColor: Colors.white,
