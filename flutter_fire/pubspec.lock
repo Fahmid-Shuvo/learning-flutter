@@ -65,7 +65,7 @@ packages:
     source: hosted
     version: "0.15.0+1"
   firebase_core:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: firebase_core
       url: "https://pub.dartlang.org"
@@ -82,7 +82,7 @@ packages:
     source: sdk
     version: "0.0.0"
   font_awesome_flutter:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: font_awesome_flutter
       url: "https://pub.dartlang.org"
@@ -145,7 +145,7 @@ packages:
     source: hosted
     version: "2.0.0"
   scoped_model:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: scoped_model
       url: "https://pub.dartlang.org"
