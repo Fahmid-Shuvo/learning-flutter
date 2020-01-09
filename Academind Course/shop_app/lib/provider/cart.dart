@@ -17,6 +17,8 @@ class CartItem {
 
 class Cart extends ChangeNotifier {
   Map<String, CartItem> _items = {};
+  // final String authToken;
+  // Cart(this.authToken, this._items);
 
   Map<String, CartItem> get items {
     return {..._items};
@@ -44,13 +46,8 @@ class Cart extends ChangeNotifier {
               title: existingItem.title,
               quantity: existingItem.quantity + 1));
     } else {
-      _items.putIfAbsent(
-          productId,
-          () => CartItem(
-              id: DateTime.now().toString(),
-              price: price,
-              title: title,
-              quantity: 1));
+      _items.putIfAbsent(productId,
+          () => CartItem(id: DateTime.now().toString(), price: price, title: title, quantity: 1));
     }
     notifyListeners();
   }
