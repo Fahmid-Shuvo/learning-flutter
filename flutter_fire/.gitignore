@@ -31,6 +31,7 @@
 /test/
 
 # Android related
+/android/app/google-services.json
 **/android/**/gradle-wrapper.jar
 **/android/.gradle
 **/android/captures/
@@ -38,7 +39,6 @@
 **/android/gradlew.bat
 **/android/local.properties
 **/android/**/GeneratedPluginRegistrant.java
-google-services.json
 
 # iOS/XCode related
 **/ios/**/*.mode1v3
