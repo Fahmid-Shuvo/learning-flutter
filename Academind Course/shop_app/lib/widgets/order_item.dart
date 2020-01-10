@@ -19,15 +19,22 @@ class _OrderItemState extends State<OrderItem> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Colors.purple,
       margin: EdgeInsets.all(10),
       child: Column(
         children: <Widget>[
           ListTile(
-            title: Text('Rs.${widget.orderItem.totalAmount}'),
-            subtitle: Text(DateFormat('dd/MM/yyyy hh:mm')
-                .format(widget.orderItem.createdAt)),
+            title: Text(
+              'Rs.${widget.orderItem.totalAmount}',
+              style: TextStyle(color: Colors.white),
+            ),
+            subtitle: Text(DateFormat('dd/MM/yyyy hh:mm').format(widget.orderItem.createdAt),
+                style: TextStyle(color: Colors.white)),
             trailing: IconButton(
-              icon: Icon(_isExpanded ? Icons.expand_less : Icons.expand_more),
+              icon: Icon(
+                _isExpanded ? Icons.expand_less : Icons.expand_more,
+                color: Colors.white,
+              ),
               onPressed: () {
                 setState(() {
                   _isExpanded = !_isExpanded;
@@ -47,12 +54,13 @@ class _OrderItemState extends State<OrderItem> {
                                 Text(
                                   '${product.title}',
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w400,
                                       fontSize: 20),
                                 ),
                                 Text(
                                   'x${product.quantity}   Rs.${product.price}',
-                                  style: TextStyle(fontSize: 15),
+                                  style: TextStyle(fontSize: 15, color: Colors.white),
                                 )
                               ],
                             ))

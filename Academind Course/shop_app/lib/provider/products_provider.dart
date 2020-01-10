@@ -8,7 +8,8 @@ import './product.dart';
 class ProductsProvider with ChangeNotifier {
   List<Product> _items = [];
   final String authToken;
-  ProductsProvider(this.authToken, this._items);
+  final String userId;
+  ProductsProvider(this.authToken, this.userId, this._items);
 
   List<Product> get items {
     return [..._items];
@@ -20,22 +21,31 @@ class ProductsProvider with ChangeNotifier {
 
   Product findById(String productId) => _items.firstWhere((product) => product.id == productId);
 
-  Future<void> getAndSetProducts() async {
-    print(authToken);
-    final url = 'https://flutter-firebase-729c6.firebaseio.com/products.json?auth=$authToken';
+  Future<void> getAndSetProducts([bool filterByUser = false]) async {
+    final filterString = filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
+    var url =
+        'https://flutter-firebase-729c6.firebaseio.com/products.json?auth=$authToken&$filterString';
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      if (extractedData == null) {
+        return;
+      }
+      url =
+          'https://flutter-firebase-729c6.firebaseio.com/userFavorites/$userId.json?auth=$authToken';
+      final favoriteResponse = await http.get(url);
+      final favoriteData = json.decode(favoriteResponse.body);
       final List<Product> loadedProducts = [];
 
       extractedData.forEach((productId, product) {
         loadedProducts.add(Product(
-            id: productId,
-            title: product['title'],
-            description: product['description'],
-            price: product['price'],
-            imageUrl: product['imageUrl'],
-            isFavorite: product['isFavorite']));
+          id: productId,
+          title: product['title'],
+          description: product['description'],
+          price: product['price'],
+          imageUrl: product['imageUrl'],
+          isFavorite: favoriteData == null ? false : favoriteData[productId] ?? false,
+        ));
       });
       _items = loadedProducts;
       notifyListeners();
@@ -53,7 +63,8 @@ class ProductsProvider with ChangeNotifier {
             'description': product.description,
             'price': product.price,
             'imageUrl': product.imageUrl,
-            'isFavorite': product.isFavorite
+            'isFavorite': product.isFavorite,
+            'creatorId': userId
           }));
 
       final productId = json.decode(response.body)['name'];
@@ -76,7 +87,7 @@ class ProductsProvider with ChangeNotifier {
   Future<void> updateProduct(String id, Product newProduct) async {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
-      final url = 'https://flutter-firebase-729c6.firebaseio.com/products/$id.json';
+      final url = 'https://flutter-firebase-729c6.firebaseio.com/products/$id.json?auth=$authToken';
 
       await http.patch(url,
           body: json.encode({
@@ -93,7 +104,7 @@ class ProductsProvider with ChangeNotifier {
   }
 
   Future<void> deleteProduct(String id) async {
-    final url = 'https://flutter-firebase-729c6.firebaseio.com/products/$id.json';
+    final url = 'https://flutter-firebase-729c6.firebaseio.com/products/$id.json?auth=$authToken';
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
     var existingProduct = _items[existingProductIndex];
     _items.removeAt(existingProductIndex);

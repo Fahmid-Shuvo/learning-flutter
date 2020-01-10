@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../screens/orders_screen.dart';
 import '../screens/user_product_screen.dart';
+import '../provider/auth.dart';
 
 class MainDrawer extends StatelessWidget {
   @override
@@ -22,17 +24,28 @@ class MainDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.payment),
             title: Text('Orders'),
-            onTap: () =>
-                Navigator.of(context).pushNamed(OrdersScreen.routeName),
+            onTap: () => Navigator.of(context).pushNamed(OrdersScreen.routeName),
           ),
           Divider(),
           ListTile(
             leading: Icon(Icons.date_range),
             title: Text('Manage Products'),
-            onTap: () =>
-                Navigator.of(context).pushNamed(UserProductsScreen.routeName),
+            onTap: () => Navigator.of(context).pushNamed(UserProductsScreen.routeName),
           ),
           Divider(),
+          ListTile(
+              leading: Icon(
+                Icons.exit_to_app,
+                color: Colors.red,
+              ),
+              title: Text(
+                'Logout',
+                style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+              ),
+              onTap: () {
+                Navigator.of(context).pop();
+                Provider.of<Auth>(context, listen: false).logOut();
+              }),
         ],
       ),
     );
