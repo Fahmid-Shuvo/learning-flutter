@@ -13,39 +13,52 @@ class OrderItem extends StatefulWidget {
   _OrderItemState createState() => _OrderItemState();
 }
 
-class _OrderItemState extends State<OrderItem> {
+class _OrderItemState extends State<OrderItem> with SingleTickerProviderStateMixin {
   bool _isExpanded = false;
+  AnimationController _controller;
+
+  @override
+  void initState() {
+    _controller = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Colors.purple,
-      margin: EdgeInsets.all(10),
-      child: Column(
-        children: <Widget>[
-          ListTile(
-            title: Text(
-              'Rs.${widget.orderItem.totalAmount}',
-              style: TextStyle(color: Colors.white),
-            ),
-            subtitle: Text(DateFormat('dd/MM/yyyy hh:mm').format(widget.orderItem.createdAt),
-                style: TextStyle(color: Colors.white)),
-            trailing: IconButton(
-              icon: Icon(
-                _isExpanded ? Icons.expand_less : Icons.expand_more,
-                color: Colors.white,
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 300),
+      height: _isExpanded ? min(widget.orderItem.products.length * 20.0 + 110, 200) : 95,
+      child: Card(
+        color: Colors.purple,
+        margin: EdgeInsets.all(10),
+        child: Column(
+          children: <Widget>[
+            ListTile(
+              title: Text(
+                'Rs.${widget.orderItem.totalAmount}',
+                style: TextStyle(color: Colors.white),
               ),
-              onPressed: () {
-                setState(() {
-                  _isExpanded = !_isExpanded;
-                });
-              },
+              subtitle: Text(DateFormat('dd/MM/yyyy hh:mm').format(widget.orderItem.createdAt),
+                  style: TextStyle(color: Colors.white)),
+              trailing: IconButton(
+                icon: AnimatedIcon(
+                  color: Colors.white,
+                  icon: AnimatedIcons.view_list,
+                  progress: _controller,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _isExpanded = !_isExpanded;
+                  });
+                  _isExpanded ? _controller.forward() : _controller.reverse();
+                },
+              ),
             ),
-          ),
-          if (_isExpanded)
-            Container(
+            AnimatedContainer(
+                duration: Duration(milliseconds: 300),
                 padding: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
-                height: min(widget.orderItem.products.length * 20.0 + 10, 100),
+                height: _isExpanded ? min(widget.orderItem.products.length * 20.0 + 10, 100) : 0,
                 child: ListView(
                     children: widget.orderItem.products
                         .map((product) => Row(
@@ -65,7 +78,8 @@ class _OrderItemState extends State<OrderItem> {
                               ],
                             ))
                         .toList()))
-        ],
+          ],
+        ),
       ),
     );
   }
