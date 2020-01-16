@@ -1,6 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/great_places.dart';
 import '../widgets/image_input.dart';
 
 class AddPlaceScreen extends StatefulWidget {
@@ -15,6 +18,17 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
 
   void _onSelectedImage(File pickedImage) {
     selectedImage = pickedImage;
+  }
+
+  void _savePlace() {
+    if (_titleController.text.isEmpty || selectedImage == null) {
+      return;
+    }
+    Provider.of<GreatPlaces>(context, listen: false).addPlaces(
+      _titleController.text,
+      selectedImage,
+    );
+    Navigator.of(context).pop();
   }
 
   @override
@@ -52,7 +66,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
             elevation: 0,
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             color: Theme.of(context).accentColor,
-            onPressed: () {},
+            onPressed: _savePlace,
           ),
         ],
       ),
