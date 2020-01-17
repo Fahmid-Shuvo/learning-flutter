@@ -12,9 +12,14 @@ class GreatPlaces with ChangeNotifier {
     return [..._places];
   }
 
-  Future<void> addPlaces(String placeTitle, File placeImage, PlaceLocation pickedLocation) async {
-    final address =
-        await LocationHelper.getUserAddress(pickedLocation.latitude, pickedLocation.longitude);
+  Place findById(String placeId) {
+    return _places.firstWhere((place) => place.id == placeId);
+  }
+
+  Future<void> addPlaces(
+      String placeTitle, File placeImage, PlaceLocation pickedLocation) async {
+    final address = await LocationHelper.getUserAddress(
+        pickedLocation.latitude, pickedLocation.longitude);
     final updatedLocation = PlaceLocation(
       latitude: pickedLocation.latitude,
       longitude: pickedLocation.longitude,
